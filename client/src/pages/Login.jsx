@@ -40,7 +40,7 @@ const Login = () => {
                     "Content-type": "application/json"
                 }
             };
-            const { data } = await axios.post("http://localhost:4545/auth/login", { email, password }, config);
+            const { data } = await axios.post("https://backend-argon-quber.onrender.com/auth/login", { email, password }, config);
 
             toast({
                 title: data.msg,

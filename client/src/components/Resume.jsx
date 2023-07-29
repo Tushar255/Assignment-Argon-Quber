@@ -48,7 +48,7 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
                 }
             };
 
-            const { data } = await axios.post("/info", {
+            const { data } = await axios.post("https://backend-argon-quber.onrender.com/info", {
                 description: addDesciption,
                 skills: addSkill,
                 education: addEducation,

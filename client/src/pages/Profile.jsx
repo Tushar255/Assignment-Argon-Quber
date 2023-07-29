@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { setInfo } from '../State/infoSlice';
-import { setLogin } from '../State/authSlice';
 
 const Profile = () => {
     const token = useSelector((state) => state.auth.token)
@@ -19,12 +18,8 @@ const Profile = () => {
                 Authorization: `Bearer ${token}`
             }
         };
-        console.log(token);
-        console.log(user);
 
-        const { data } = await axios.get("/info/info", config);
-
-        console.log(data);
+        const { data } = await axios.get("https://backend-argon-quber.onrender.com/info/info", config);
 
         dispatch(
             setInfo({
@@ -41,7 +36,6 @@ const Profile = () => {
             navigate('/');
         }
 
-        console.log("Hello");
     }, [fetchAgain])
 
     useEffect(() => {

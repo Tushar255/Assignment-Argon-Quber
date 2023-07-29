@@ -26,14 +26,13 @@ const Social = () => {
             if (response.status === 200) return response.json();
             throw new Error("authentication failed!")
         }).then(async (resObj) => {
-            console.log(resObj.user);
             const userData = resObj.user
             const config = {
                 headers: {
                     "Content-type": "application/json"
                 }
             };
-            const { data } = await axios.post("/auth/social-login", { userData }, config)
+            const { data } = await axios.post("https://backend-argon-quber.onrender.com/auth/social-login", { userData }, config)
 
             toast({
                 title: data.msg,

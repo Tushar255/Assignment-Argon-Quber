@@ -52,7 +52,7 @@ const Signup = () => {
                     "Content-type": "application/json"
                 }
             };
-            const { data } = await axios.post("http://localhost:4545/auth", { firstName, lastName, email, password, phone }, config);
+            const { data } = await axios.post("https://backend-argon-quber.onrender.com/auth", { firstName, lastName, email, password, phone }, config);
 
             toast({
                 title: "Registered!",
