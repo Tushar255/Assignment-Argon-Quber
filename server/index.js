@@ -20,7 +20,7 @@ const app = express();
 app.use(express.static(path.resolve(__dirname, 'dist')))
 app.use(express.json());
 app.use(cors({
-    origin: 'https://64c560b99e67f315397adbc4--resonant-creponne-e01484.netlify.app',
+    origin: 'https://main--resonant-creponne-e01484.netlify.app',
     credentials: true,
 }));
 app.use(cookieSession(
