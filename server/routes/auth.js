@@ -8,7 +8,7 @@ router.route('/').post(registerUser);
 router.route('/login').post(login);
 router.route('/social-login').post(socialLogin);
 
-const CLIENT_URL = "http://localhost:5173/social-login";
+const CLIENT_URL = "https://main--resonant-creponne-e01484.netlify.app/social-login";
 
 router.get('/linkedin', passport.authenticate('linkedin'));
 
