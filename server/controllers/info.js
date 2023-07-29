@@ -1,4 +1,4 @@
-import Info from "../models/info.js";
+import Info from "../models/Info.js";
 
 export const createNewUserInfo = async (req, res) => {
     try {
