@@ -32,7 +32,7 @@ router.get('/login/success', (req, res) => {
     if (req.user) {
         res.status(200).json({ user: req.user });
     } else {
-        res.status(401).json({ error: 'Unauthorized', user: req.user });
+        res.status(401).json({ error: req.user });
     }
 });
 
