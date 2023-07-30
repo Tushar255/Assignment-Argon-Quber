@@ -22,6 +22,7 @@ app.use(express.json());
 app.use(
     cors({
         origin: "https://main--resonant-creponne-e01484.netlify.app",
+        methods: "GET, POST, PUT, DELETE",
         credentials: true,
     })
 );
