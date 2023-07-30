@@ -91,7 +91,7 @@ passport.use(new LinkedInStrategy({
 passport.use(new TwitterStrategy({
     consumerKey: process.env.TWITTER_CONSUMER_KEY,
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-    callbackURL: "/auth/twitter/callback",
+    callbackURL: "https://backend-argon-quber.onrender.com/auth/twitter/callback",
     includeEmail: true
 },
 function(token, tokenSecret, profile, cb) {
