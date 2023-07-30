@@ -12,7 +12,7 @@ function App() {
         <Route path='/' element={<Signup />} />
         <Route path='/login' element={<Login />} />
         <Route path='/profile' element={<Profile />} />
-        <Route path='https://main--resonant-creponne-e01484.netlify.app/social-login' element={<Social />} />
+        <Route path='/social-login' element={<Social />} />
       </Routes>
     </div>
   )
