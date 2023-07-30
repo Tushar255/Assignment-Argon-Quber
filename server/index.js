@@ -41,7 +41,7 @@ app.use(passport.session());
 passport.use(new LinkedInStrategy({
     clientID: process.env.LINKEDIN_KEY,
     clientSecret: process.env.LINKEDIN_SECRET,
-    callbackURL: "/auth/linkedin/callback",
+    callbackURL: "https://backend-argon-quber.onrender.com/auth/linkedin/callback",
     scope: ['r_emailaddress', 'r_liteprofile'],
 }, function(accessToken, refreshToken, profile, cb) {
     // At this point, the LinkedIn profile data is available in the 'profile' variable.
