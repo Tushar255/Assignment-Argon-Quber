@@ -67,6 +67,7 @@ const Signup = () => {
     }
 
     useEffect(() => {
+        console.log('hello');
         getUserInfoBySocialLogin();
         if (token) {
             navigate('/profile');
