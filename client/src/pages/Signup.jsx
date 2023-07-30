@@ -25,54 +25,11 @@ const Signup = () => {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.auth.token)
 
-    const getUserInfoBySocialLogin = () => {
-        fetch("https://backend-argon-quber.onrender.com/auth/login/success", {
-            method: "GET",
-            credentials: "include",
-
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": true
-            },
-        }).then(response => {
-            if (response.status === 200) return response.json();
-            throw new Error("authentication failed!")
-        }).then(async (resObj) => {
-            const userData = resObj.user
-            const config = {
-                headers: {
-                    "Content-type": "application/json"
-                }
-            };
-            const { data } = await axios.post("https://backend-argon-quber.onrender.com/auth/social-login", { userData }, config)
-
-            toast({
-                title: data.msg,
-                status: "success",
-                duration: 2000,
-                isClosable: true,
-                position: "top"
-            });
-
-            dispatch(
-                setLogin({
-                    user: data.userData,
-                    token: data.token
-                })
-            );
-        }).catch(err => {
-            console.log(err);
-        })
-    }
-
     useEffect(() => {
-        console.log('hello');
-        getUserInfoBySocialLogin();
         if (token) {
             navigate('/profile');
         }
-    })
+    }, [])
 
     const handleRegister = async () => {
         setLoading(true);
