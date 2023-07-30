@@ -25,20 +25,14 @@ router.get('/twitter/callback',
     passport.authenticate('twitter', {
         successRedirect: CLIENT_URL,
         failureRedirect: '/login/failure'
-    }), (req, res) => {
-        if (req.user) {
-            console.log(req.user);
-    } else {
-        console.log('no req.user');
-    }
-    }
+    }),
 );
 
 router.get('/login/success', (req, res) => {
     if (req.user) {
         res.status(200).json({ user: req.user });
     } else {
-        res.status(401).json({ error: 'Unauthorized' });
+        res.status(401).json({ error: 'Unauthorized', user: req.user });
     }
 });
 
