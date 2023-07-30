@@ -26,7 +26,7 @@ const Signup = () => {
     const token = useSelector((state) => state.auth.token)
 
     const getUserInfoBySocialLogin = () => {
-        fetch("/auth/login/success", {
+        fetch("https://backend-argon-quber.onrender.com/auth/login/success", {
             method: "GET",
             credentials: "include",
 
