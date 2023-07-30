@@ -76,6 +76,9 @@ export const registerUser = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
+        if (!req.body.email || !req.body.password) {
+            res.status(404).json({ error: "Enter all the fields."});
+        }
         const query = 'SELECT * FROM users WHERE email = ?';
         db.query(query, [req.body.email], (err, data) => {
             if (err) return res.status(500).json(err);

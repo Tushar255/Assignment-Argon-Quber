@@ -5,7 +5,7 @@ export const createNewUserInfo = async (req, res) => {
         const userId = req.user.id;
         const { description, skills, education, experience } = req.body;
 
-        if (!skills || !description || !education || !experience) {
+        if (skills.length == 0 || !description || education.length == 0 || experience.length == 0) {
             res.status(400).json({error: 'Please provide all the fields.'})
         }
 
