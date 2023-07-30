@@ -125,10 +125,7 @@ function(token, tokenSecret, profile, cb) {
                 return cb(err);
             }
 
-            const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET);
-
             const newUser = {
-                token: token,
                 id: insertResult.insertId,
                 firstName: firstName,
                 lastName: lastName,
