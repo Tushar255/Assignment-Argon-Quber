@@ -58,7 +58,7 @@ const Social = () => {
         if (token && user) {
             navigate('/profile');
         }
-    })
+    }, [])
 
     return (
         <div>Please wait...</div>
