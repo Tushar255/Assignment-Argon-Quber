@@ -71,7 +71,7 @@ const Signup = () => {
         if (token) {
             navigate('/profile');
         }
-    }, [])
+    })
 
     const handleRegister = async () => {
         setLoading(true);
