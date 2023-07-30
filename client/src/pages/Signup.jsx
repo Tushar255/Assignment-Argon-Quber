@@ -85,10 +85,10 @@ const Signup = () => {
     }
 
     const handleTwitter = async () => {
-        window.open("/auth/twitter", "_self")
+        window.open("https://backend-argon-quber.onrender.com/auth/twitter", "_self")
     }
     const handleLinkedin = async () => {
-        window.open("/auth/linkedin", "_self")
+        window.open("https://backend-argon-quber.onrender.com/auth/linkedin", "_self")
     }
 
     return (
