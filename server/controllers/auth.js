@@ -105,8 +105,9 @@ export const login = async (req, res) => {
 
 export const socialLogin = (req, res) => {
     const { userData } = req.body;
-
+    console.log(userData);
     const token = jwt.sign({ id: userData.id }, process.env.JWT_SECRET);
+    console.log(token);
 
     res.status(200).json({ token, userData, msg: 'Login Successful!' });
 } 
