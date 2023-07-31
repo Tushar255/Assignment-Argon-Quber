@@ -23,9 +23,11 @@ const Social = () => {
                 "Access-Control-Allow-Credentials": true
             },
         }).then(response => {
+            console.log(response);
             if (response.status === 200) return response.json();
             throw new Error("authentication failed!")
         }).then(async (resObj) => {
+            console.log(resObj);
             const userData = resObj.user
             const config = {
                 headers: {
