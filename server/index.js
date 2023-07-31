@@ -153,6 +153,7 @@ passport.deserializeUser((id, done) => {
 
         if (results.length > 0) {
             const user = JSON.parse(JSON.stringify(results[0]));
+            console.log(user);
             return done(null, user);
         } else {
             return done(new Error('User not found'));
