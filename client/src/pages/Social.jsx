@@ -56,7 +56,7 @@ const Social = () => {
     }
 
     useEffect(() => {
-        // getUserInfoBySocialLogin();
+        getUserInfoBySocialLogin();
         if (token && user) {
             navigate('/profile');
         }
