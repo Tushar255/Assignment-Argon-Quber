@@ -1,9 +1,9 @@
 import { Box, Flex, Text } from '@chakra-ui/react'
 import React from 'react'
 
-const Experience = ({ from, to, company, position, description }) => {
+const Experience = ({ from, to, company, position, description, handleFunction, hover }) => {
     return (
-        <Flex w='100%' mb='5'>
+        <Flex w='100%' mb='5' onClick={handleFunction} _hover={hover}>
             <Box w='25%'>
                 <Text as='b'>{from} - {to}</Text>
                 <Text>{company}</Text>

@@ -1,9 +1,10 @@
 import { Badge } from '@chakra-ui/react'
 import React from 'react'
 
-const SkillBadge = ({ skill }) => {
+const SkillBadge = ({ skill, handleFunction }) => {
     return (
         <Badge
+            onClick={handleFunction}
             px={2}
             py={1}
             borderRadius="lg"

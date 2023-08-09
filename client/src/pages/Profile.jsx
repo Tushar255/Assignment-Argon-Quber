@@ -19,7 +19,7 @@ const Profile = () => {
             }
         };
 
-        const { data } = await axios.get("https://backend-argon-quber.onrender.com/info/info", config);
+        const { data } = await axios.get("http://localhost:4545/info/info", config);
 
         dispatch(
             setInfo({
@@ -40,7 +40,7 @@ const Profile = () => {
 
     useEffect(() => {
         getUserInfo();
-    }, [])
+    }, [fetchAgain])
 
     return (
         <div>

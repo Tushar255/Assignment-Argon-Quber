@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Divider, Flex, FormControl, Input, InputGroup, InputRightElement, Text, useToast } from '@chakra-ui/react'
+import { Button, Divider, Flex, FormControl, FormLabel, Input, InputGroup, InputRightElement, Text, useToast } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { FaLinkedin, FaInstagram, FaTwitter } from "react-icons/fa";
@@ -16,6 +16,50 @@ const Signup = () => {
     const [password, setPassword] = useState('')
     const [cPassword, setCPassword] = useState()
     const [loading, setLoading] = useState(false)
+    const [pic, setPic] = useState()
+
+    const postDetails = (pics) => {
+        setLoading(true);
+        if (pics === undefined) {
+            toast({
+                title: "Please select an Image!",
+                status: "warning",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom"
+            });
+            return;
+        }
+
+        if (pics.type === "image/jpg" || pics.type === "image/jpeg" || pics.type === "image/png") {
+            const data = new FormData();
+            data.append("file", pics);
+            data.append("upload_preset", "chat-app");
+            data.append("cloud_name", "dghjrpqap");
+            fetch("https://api.cloudinary.com/v1_1/dghjrpqap/image/upload", {
+                method: "post",
+                body: data
+            }).then((res) => res.json())
+                .then(data => {
+                    setPic(data.url.toString());
+                    setLoading(false);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    setLoading(false);
+                });
+        } else {
+            toast({
+                title: "Please select an Image!",
+                status: "warning",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom"
+            });
+            setLoading(false)
+            return;
+        }
+    }
 
     const handleClick1 = () => setShowP(!showP)
     const handleClick2 = () => setShowCP(!showCP)
@@ -52,7 +96,7 @@ const Signup = () => {
                     "Content-type": "application/json"
                 }
             };
-            const { data } = await axios.post("https://backend-argon-quber.onrender.com/auth", { firstName, lastName, email, password, phone }, config);
+            const { data } = await axios.post("http://localhost:4545/auth", { firstName, lastName, email, password, phone, pic }, config);
 
             toast({
                 title: "Registered!",
@@ -85,10 +129,10 @@ const Signup = () => {
     }
 
     const handleTwitter = async () => {
-        window.open("https://backend-argon-quber.onrender.com/auth/twitter", "_self")
+        window.open("http://localhost:4545/auth/twitter", "_self")
     }
     const handleLinkedin = async () => {
-        window.open("https://backend-argon-quber.onrender.com/auth/linkedin", "_self")
+        window.open("http://localhost:4545/auth/linkedin", "_self")
     }
 
     return (
@@ -97,7 +141,6 @@ const Signup = () => {
             h='100vh'
             justify='center'
             align='center'
-            // bg='#7b4397'
             bg='hsl(147deg 33.33% 65.18%)'
         >
             <Flex
@@ -184,7 +227,7 @@ const Signup = () => {
                         </InputGroup>
                     </FormControl>
 
-                    <FormControl id="phone" isRequired>
+                    <FormControl id="phone" isRequired mb='6'>
                         <Input
                             p={{ base: '3', md: '6' }}
                             placeholder="Phone no."
@@ -192,6 +235,22 @@ const Signup = () => {
                             onChange={(e) => setPhone(e.target.value)}
                             boxShadow={'2px 2px black'}
                             border={'1px solid black'}
+                        />
+                    </FormControl>
+
+                    <FormControl id="pic"
+                        boxShadow={'2px 2px black'}
+                        border={'1px solid black'}
+                        p={{ base: '0', md: '1' }}
+                        borderRadius={'lg'}
+                    >
+                        <Input
+                            type="file"
+                            placeholder='Upload your Picture'
+                            accept="image/*"
+                            p={1.5}
+                            border={'none'}
+                            onChange={(e) => postDetails(e.target.files[0])}
                         />
                     </FormControl>
                 </Flex>
