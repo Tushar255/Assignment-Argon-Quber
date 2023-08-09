@@ -24,7 +24,7 @@ const EducationModal = () => {
     const dispatch = useDispatch();
 
     const handleSave = async () => {
-        if (addEducation === "") {
+        if (addEducation.length === 0) {
             toast({
                 title: "Empty field",
                 status: "warning",

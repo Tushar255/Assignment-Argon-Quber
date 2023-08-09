@@ -26,7 +26,7 @@ const ExperienceModal = () => {
     const dispatch = useDispatch();
 
     const handleSave = async () => {
-        if (addExperience === "") {
+        if (addExperience.length === 0) {
             toast({
                 title: "Empty field",
                 status: "warning",

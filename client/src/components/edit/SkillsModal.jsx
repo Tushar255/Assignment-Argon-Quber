@@ -38,7 +38,7 @@ const SkillsModal = () => {
     const dispatch = useDispatch();
 
     const handleSave = async () => {
-        if (addSkill === "") {
+        if (addSkill.length === 0) {
             toast({
                 title: "Empty field",
                 status: "warning",
