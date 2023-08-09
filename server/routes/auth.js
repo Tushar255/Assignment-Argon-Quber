@@ -8,23 +8,32 @@ router.route('/').post(registerUser);
 router.route('/login').post(login);
 router.route('/social-login').post(socialLogin);
 
-const CLIENT_URL = "https://main--resonant-creponne-e01484.netlify.app/social-login";
+const SUCCESS_URL = "http://localhost:5173/social-login";
+const FAILURE_URL = "http://localhost:5173";
 
-router.get('/linkedin', passport.authenticate('linkedin'));
+router.get('/linkedin',
+    passport.authenticate('linkedin', {
+        failureRedirect: FAILURE_URL
+    })
+);
 
 router.get('/linkedin/callback',
     passport.authenticate('linkedin', {
-        successRedirect: CLIENT_URL,
-        failureRedirect: '/login/failure'
+        successRedirect: SUCCESS_URL,
+        failureRedirect: FAILURE_URL
     }),
 );
-
-router.get('/twitter', passport.authenticate('twitter', { scope: ['profile'] }));
+router.get('/twitter',
+    passport.authenticate('twitter', {
+        scope: ['profile'],
+        failureRedirect: FAILURE_URL
+    })
+);
 
 router.get('/twitter/callback',
     passport.authenticate('twitter', {
-        successRedirect: CLIENT_URL,
-        failureRedirect: '/login/failure'
+        successRedirect: SUCCESS_URL,
+        failureRedirect: FAILURE_URL
     }),
 );
 
@@ -36,8 +45,9 @@ router.get('/login/success', (req, res) => {
     }
 });
 
-router.get('/login/failure', (req, res) => {
-    res.status(200).json({ error: "Authentication failed."});
+router.get('/logout', (req, res) => {
+    req.logout();
+    res.status(200).json('Logout Successfully')
 })
 
 export default router;

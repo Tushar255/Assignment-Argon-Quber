@@ -9,19 +9,27 @@ import Education from './Education'
 import Experience from './Experience'
 import axios from 'axios'
 
+import EducationModal from './edit/EducationModal'
+import DescriptionModal from './edit/DecriptionModal'
+import ExperienceModal from './edit/ExperienceModal'
+import SkillsModal from './edit/SkillsModal'
+
 const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
+    const [edit, setEdit] = useState(false);
     const [addDesciption, setAddDesciption] = useState("");
     const [loading, setLoading] = useState(false);
 
     const [addSkill, setAddSkill] = useState([]);
     const initialSkill = ["Add", "some", "skills", "by", "typing", "and", "pressing", "Enter"]
     const [skill, setSkill] = useState("");
+    const [nextSkillId, setNextSkillId] = useState(1);
 
     const [addEducation, setAddEducation] = useState([]);
     const [institute, setInstitute] = useState("")
     const [eduFrom, setEduFrom] = useState(null)
     const [eduTo, setEduTo] = useState(null)
     const [degree, setDegree] = useState("")
+    const [nextEducationId, setNextEducationId] = useState(1);
 
     const [addExperience, setAddExperience] = useState([]);
     const [company, setCompany] = useState("")
@@ -29,6 +37,7 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
     const [expTo, setExpTo] = useState(null)
     const [position, setPosition] = useState("")
     const [describe, setDescribe] = useState("")
+    const [nextExperienceId, setNextExperienceId] = useState(1);
 
     const dispatch = useDispatch();
     const toast = useToast();
@@ -40,6 +49,18 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
 
     const handleSave = async () => {
         setLoading(true);
+        if (addDesciption === "" || addSkill.length === 0 || addEducation.length === 0 || addExperience.length === 0) {
+            setLoading(false);
+            toast({
+                title: "Enter all the fields",
+                status: "warning",
+                duration: 2000,
+                isClosable: true,
+                position: "top"
+            });
+            return;
+        }
+
         try {
             const config = {
                 headers: {
@@ -48,7 +69,7 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
                 }
             };
 
-            const { data } = await axios.post("https://backend-argon-quber.onrender.com/info", {
+            const { data } = await axios.post("http://localhost:4545/info", {
                 description: addDesciption,
                 skills: addSkill,
                 education: addEducation,
@@ -77,6 +98,8 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
             setAddSkill([]);
             setAddEducation([]);
             setAddExperience([]);
+            setNextEducationId(1);
+            setNextExperienceId(1);
         } catch (err) {
             setLoading(false);
             toast({
@@ -89,7 +112,9 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
         }
     }
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        await axios.get("http://localhost:4545/auth/logout");
+
         dispatch(
             setLogout()
         )
@@ -107,28 +132,157 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
     }
 
     const handleAddEducation = () => {
-        setAddEducation((prev) => [...prev, { institute, degree, eduFrom, eduTo }]);
+        if (!education || !degree) {
+            return toast({
+                title: "Empty fields",
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+                position: "bottom"
+            });
+        }
+        const yearRegex = /^\d{4}$/;
+
+        if (yearRegex.test(eduFrom)) {
+            if (!yearRegex.test(eduTo)) {
+                return toast({
+                    title: "Enter a valid year",
+                    status: "error",
+                    duration: 2000,
+                    isClosable: true,
+                    position: "top"
+                });
+            }
+        } else {
+            return toast({
+                title: "Enter a valid year",
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+                position: "top"
+            });
+        }
+
+        const newEducation = {
+            id: nextEducationId,
+            institute,
+            degree,
+            eduFrom,
+            eduTo,
+        };
+
+        setAddEducation((prev) => [...prev, newEducation]);
         setInstitute("")
         setEduFrom(null)
         setEduTo(null)
         setDegree("")
+        setNextEducationId((prevId) => prevId + 1);
     }
+    const handleDeleteEducation = (educationId) => {
+        setAddEducation((prev) => prev.filter((edu) => edu.id !== educationId));
+    };
 
     const handleAddExperience = () => {
-        setAddExperience((prev) => [...prev, { company, position, describe, expFrom, expTo }]);
+        if (!company || !position || !describe) {
+            return toast({
+                title: "Empty fields",
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+                position: "bottom-right"
+            });
+        }
+
+        const yearRegex = /^\d{4}$/;
+
+        if (yearRegex.test(expFrom)) {
+            if (!yearRegex.test(expTo)) {
+                return toast({
+                    title: "Enter a valid year",
+                    status: "error",
+                    duration: 2000,
+                    isClosable: true,
+                    position: "top"
+                });
+            }
+        } else {
+            return toast({
+                title: "Enter a valid year",
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+                position: "top"
+            });
+        }
+
+        const newExperience = {
+            id: nextExperienceId,
+            company,
+            position,
+            describe,
+            expFrom,
+            expTo
+        };
+
+        setAddExperience((prev) => [...prev, newExperience]);
         setCompany("")
         setExpFrom(null)
         setExpTo(null)
         setPosition("")
         setDescribe("")
+        setNextExperienceId((prevId) => prevId + 1);
     }
+    const handleDeleteExperience = (experienceId) => {
+        setAddExperience((prev) => prev.filter((exp) => exp.id !== experienceId));
+    };
 
     const handleKeyPress = (event) => {
         if (event.key === 'Enter' && skill !== "") {
-            setAddSkill((prevSkills) => [...prevSkills, skill]);
+            const newSkill = {
+                id: nextSkillId,
+                skill
+            };
+
+            setAddSkill((prevSkills) => [...prevSkills, newSkill]);
             setSkill("");
+            setNextSkillId((prev) => prev + 1);
         }
     };
+    const deleteSkill = (sid) => {
+        setAddSkill((prev) => prev.filter((s) => s.id !== sid));
+    }
+
+    const handleReset = async () => {
+        setEdit(false);
+        try {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+
+            const { data } = await axios.post("http://localhost:4545/info/reset", {}, config);
+            console.log(data);
+
+            toast({
+                title: data.msg,
+                status: "success",
+                duration: 2000,
+                isClosable: true,
+                position: "top"
+            });
+
+            dispatch(removeInfo())
+        } catch (error) {
+            toast({
+                title: error.response.data.err,
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+                position: "top"
+            });
+        }
+    }
 
     return (
         <Flex
@@ -156,7 +310,8 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
                             mx='auto'
                             my='auto'
                             boxSize={{ base: '180px', lg: "250px" }}
-                            name='Segun Adebayo' src='https://unsplash.com/photos/zDDdoYqQ64U'
+                            src={user.pic}
+                            name={user.email}
                             border={'2px solid black'}
                         />
 
@@ -198,10 +353,7 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
                                         <Text>{user.phone}</Text>
                                     </>
                                     :
-                                    <Input
-                                        placeholder='Enter phone no.'
-                                        border={'none'} size='xs'
-                                    />
+                                    <Text>phone no.</Text>
                             }
                         </Flex>
                     </Flex>
@@ -210,7 +362,7 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
                         w='fit-content'
                         colorScheme='gray'
                         boxShadow={'4px 4px black'}
-                        _hover={{ bg: '#706e69', color: 'white' }}
+                        _hover={{ bg: 'black', color: 'white' }}
                         _focus={{ transform: 'translateX(4px)', boxShadow: '1px 2px 0px 0px #000', color: 'black' }}
                         mx='auto'
                         onClick={() => handleLogout()}
@@ -218,17 +370,45 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
                         Logout
                     </Button>
 
-                    <Button
-                        w='fit-content'
-                        bg='#706e69' color='white'
-                        boxShadow={'4px 4px black'}
-                        _hover={{ bg: 'white', color: 'black' }}
-                        _focus={{ transform: 'translateX(4px)', boxShadow: '1px 2px 0px 0px #000', color: 'black' }}
-                        mx='auto'
-                        onClick={() => handleSave()}
-                    >
-                        Save
-                    </Button>
+                    {
+                        (description === null && skills.length === 0 && education.length === 0 && experience.length === 0)
+                            ?
+                            <Button
+                                isLoading={loading}
+                                w='fit-content'
+                                bg='#706e69' color='white'
+                                boxShadow={'4px 4px black'}
+                                _hover={{ bg: 'hsl(29.4deg 2.7% 32.81%)', color: 'lightgreen' }}
+                                _focus={{ transform: 'translateX(4px)', boxShadow: '1px 2px 0px 0px #000', color: 'black' }}
+                                mx='auto'
+                                onClick={() => handleSave()}
+                            >
+                                Save
+                            </Button>
+                            :
+                            <Flex>
+                                <Button ml='3'
+                                    w='fit-content'
+                                    bg='red' color='white'
+                                    boxShadow={'4px 4px black'}
+                                    _hover={{ bg: 'hsl(29.4deg 2.7% 32.81%)', color: 'red' }}
+                                    _focus={{ transform: 'translateX(4px)', boxShadow: '1px 2px 0px 0px #000', color: 'black' }}
+                                    onClick={handleReset}
+                                >
+                                    Reset
+                                </Button>
+                                <Button ml='3'
+                                    w='fit-content'
+                                    bg='green' color='white'
+                                    boxShadow={'4px 4px black'}
+                                    _hover={{ bg: 'hsl(29.4deg 2.7% 32.81%)', color: 'lightgreen' }}
+                                    _focus={{ transform: 'translateX(4px)', boxShadow: '1px 2px 0px 0px #000', color: 'black' }}
+                                    onClick={() => setEdit(!edit)}
+                                >
+                                    {!edit ? 'Edit' : 'Done'}
+                                </Button>
+                            </Flex>
+                    }
                 </Stack>
             </Flex>
 
@@ -244,17 +424,20 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
                         flexDir='column' mb={'20%'}
                         h='35%'
                     >
-                        <Text
-                            w='35%'
-                            p='2' mb='10' align={'center'}
-                            borderRadius={'full'}
-                            fontSize={'lg'} mx={{ base: 'auto', lg: '0' }}
-                            fontWeight={'semibold'}
-                            bg='hsl(147deg 33.33% 65.18%)'
-                            border={'2px solid black'}
-                        >
-                            Description
-                        </Text>
+                        <Flex>
+                            <Text
+                                w='35%'
+                                p='2' mb='10' align={'center'}
+                                borderRadius={'full'}
+                                fontSize={'lg'} mx={{ base: 'auto', lg: '0' }}
+                                fontWeight={'semibold'}
+                                bg='hsl(147deg 33.33% 65.18%)'
+                                border={'2px solid black'}
+                            >
+                                Description
+                            </Text>
+                            {edit ? <DescriptionModal /> : ''}
+                        </Flex>
 
                         <Text align={'justify'} p='3'>
                             {description ?
@@ -277,24 +460,27 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
                         w='90%' mx='auto'
                         flexDir='column'
                     >
-                        <Text
-                            w='35%'
-                            p='2' mb='10' align={'center'}
-                            borderRadius={'full'}
-                            fontSize={'lg'} mx={{ base: 'auto', lg: '0' }}
-                            fontWeight={'semibold'}
-                            bg='hsl(147deg 33.33% 65.18%)'
-                            border={'2px solid black'}
-                        >
-                            Education
-                        </Text>
+                        <Flex>
+                            <Text
+                                w='35%'
+                                p='2' mb='10' align={'center'}
+                                borderRadius={'full'}
+                                fontSize={'lg'} mx={{ base: 'auto', lg: '0' }}
+                                fontWeight={'semibold'}
+                                bg='hsl(147deg 33.33% 65.18%)'
+                                border={'2px solid black'}
+                            >
+                                Education
+                            </Text>
+                            {edit ? <EducationModal /> : ''}
+                        </Flex>
 
                         <Box w='100%' p='3'>
                             {
                                 education && education.length > 0 ?
                                     education.map((e, idx) => (
                                         <Education
-                                            key={idx}
+                                            key={e.id}
                                             from={e.eduFrom}
                                             to={e.eduTo}
                                             institute={e.institute}
@@ -303,13 +489,15 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
                                     )) :
                                     <Box w='100%'>
                                         {
-                                            addEducation && addEducation.length > 0 ? addEducation.map((e, idx) => (
+                                            addEducation && addEducation.length > 0 ? addEducation.map((e) => (
                                                 <Education
-                                                    key={idx}
+                                                    key={e.id}
                                                     from={e.eduFrom}
                                                     to={e.eduTo}
                                                     institute={e.institute}
                                                     degree={e.degree}
+                                                    handleFunction={() => handleDeleteEducation(e.id)}
+                                                    hover={{ cursor: 'pointer', bg: 'gray' }}
                                                 />
                                             ))
                                                 :
@@ -366,34 +554,38 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
                         flexDir='column' mb='20%'
                         h='35%'
                     >
-                        <Text
-                            w='35%'
-                            p='2' mb='10' align={'center'}
-                            borderRadius={'full'}
-                            fontSize={'lg'} mx={{ base: 'auto', lg: '0' }}
-                            fontWeight={'semibold'}
-                            bg='hsl(147deg 33.33% 65.18%)'
-                            border={'2px solid black'}
-                        >
-                            Skills
-                        </Text>
+                        <Flex>
+                            <Text
+                                w='35%'
+                                p='2' mb='10' align={'center'}
+                                borderRadius={'full'}
+                                fontSize={'lg'} mx={{ base: 'auto', lg: '0' }}
+                                fontWeight={'semibold'}
+                                bg='hsl(147deg 33.33% 65.18%)'
+                                border={'2px solid black'}
+                            >
+                                Skills
+                            </Text>
+                            {edit ? <SkillsModal /> : ''}
+                        </Flex>
 
                         <Flex justify={'center'} wrap={'wrap'} w={{ base: '100%', lg: '85%' }} p='3'>
                             {
                                 skills && skills.length > 0 ?
-                                    skills.map((s, idx) => (
+                                    skills.map((s) => (
                                         <SkillBadge
-                                            key={idx}
-                                            skill={s}
+                                            key={s.id}
+                                            skill={s.skill}
                                         />
                                     ))
                                     :
                                     <Box w='100%'>
                                         {
-                                            addSkill && addSkill.length > 0 ? addSkill.map((s, idx) => (
+                                            addSkill && addSkill.length > 0 ? addSkill.map((s) => (
                                                 <SkillBadge
-                                                    key={idx}
-                                                    skill={s}
+                                                    key={s.id}
+                                                    skill={s.skill}
+                                                    handleFunction={() => deleteSkill(s.id)}
                                                 />
                                             ))
                                                 :
@@ -420,24 +612,27 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
                         w='90%' mx='auto'
                         flexDir='column' mb={{ base: '5', lg: '0' }}
                     >
-                        <Text
-                            w='35%'
-                            p='2' mb='10' align={'center'}
-                            borderRadius={'full'}
-                            fontSize={'lg'} mx={{ base: 'auto', lg: '0' }}
-                            fontWeight={'semibold'}
-                            bg='hsl(147deg 33.33% 65.18%)'
-                            border={'2px solid black'}
-                        >
-                            Experience
-                        </Text>
+                        <Flex>
+                            <Text
+                                w='35%'
+                                p='2' mb='10' align={'center'}
+                                borderRadius={'full'}
+                                fontSize={'lg'} mx={{ base: 'auto', lg: '0' }}
+                                fontWeight={'semibold'}
+                                bg='hsl(147deg 33.33% 65.18%)'
+                                border={'2px solid black'}
+                            >
+                                Experience
+                            </Text>
+                            {edit ? <ExperienceModal /> : ''}
+                        </Flex>
 
                         <Box w='100%' p='3'>
                             {
                                 experience && experience.length > 0 ?
                                     experience.map((e, idx) => (
                                         <Experience
-                                            key={idx}
+                                            key={e.id}
                                             from={e.expFrom}
                                             to={e.expTo}
                                             company={e.company}
@@ -449,12 +644,14 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
                                         {
                                             addExperience && addExperience.length > 0 ? addExperience.map((e, idx) => (
                                                 <Experience
-                                                    key={idx}
+                                                    key={e.id}
                                                     from={e.expFrom}
                                                     to={e.expTo}
                                                     company={e.company}
                                                     position={e.position}
                                                     description={e.describe}
+                                                    handleFunction={() => handleDeleteExperience(e.id)}
+                                                    hover={{ cursor: 'pointer', bg: 'gray' }}
                                                 />
                                             ))
                                                 :
