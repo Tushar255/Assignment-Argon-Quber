@@ -129,10 +129,10 @@ const Signup = () => {
     }
 
     const handleTwitter = async () => {
-        window.open("http://localhost:4545/auth/twitter", "_self")
+        window.open("https://tsb-backend-tole.onrender.com/auth/twitter", "_self")
     }
     const handleLinkedin = async () => {
-        window.open("http://localhost:4545/auth/linkedin", "_self")
+        window.open("https://tsb-backend-tole.onrender.com/auth/linkedin", "_self")
     }
 
     return (

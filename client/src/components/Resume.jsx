@@ -69,7 +69,7 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
                 }
             };
 
-            const { data } = await axios.post("http://localhost:4545/info", {
+            const { data } = await axios.post("https://tsb-backend-tole.onrender.com/info", {
                 description: addDesciption,
                 skills: addSkill,
                 education: addEducation,
@@ -113,7 +113,7 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
     }
 
     const handleLogout = async () => {
-        await axios.get("http://localhost:4545/auth/logout");
+        await axios.get("https://tsb-backend-tole.onrender.com/auth/logout");
 
         dispatch(
             setLogout()
@@ -261,7 +261,7 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
                 }
             };
 
-            const { data } = await axios.post("http://localhost:4545/info/reset", {}, config);
+            const { data } = await axios.post("https://tsb-backend-tole.onrender.com/info/reset", {}, config);
             console.log(data);
 
             toast({

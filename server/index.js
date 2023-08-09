@@ -36,7 +36,7 @@ app.use(passport.session());
 passport.use(new LinkedInStrategy({
     clientID: process.env.LINKEDIN_KEY,
     clientSecret: process.env.LINKEDIN_SECRET,
-    callbackURL: "http://localhost:4545/auth/linkedin/callback",
+    callbackURL: "https://tsb-backend-tole.onrender.com/auth/linkedin/callback",
     scope: ['r_emailaddress', 'r_liteprofile'],
 }, function (accessToken, refreshToken, profile, cb) {
     const email = profile.emails[0].value;
@@ -98,7 +98,7 @@ passport.use(new LinkedInStrategy({
 passport.use(new TwitterStrategy({
     consumerKey: process.env.TWITTER_CONSUMER_KEY,
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-    callbackURL: "http://localhost:4545/auth/twitter/callback",
+    callbackURL: "https://tsb-backend-tole.onrender.com/auth/twitter/callback",
     includeEmail: true
 },
     function (token, tokenSecret, profile, cb) {

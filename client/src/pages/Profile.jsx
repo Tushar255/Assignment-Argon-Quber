@@ -19,7 +19,7 @@ const Profile = () => {
             }
         };
 
-        const { data } = await axios.get("http://localhost:4545/info/info", config);
+        const { data } = await axios.get("https://tsb-backend-tole.onrender.com/info/info", config);
 
         dispatch(
             setInfo({

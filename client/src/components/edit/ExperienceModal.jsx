@@ -45,7 +45,7 @@ const ExperienceModal = () => {
                 }
             };
 
-            const { data } = await axios.put("http://localhost:4545/info/update/experience", {
+            const { data } = await axios.put("https://tsb-backend-tole.onrender.com/info/update/experience", {
                 experience: addExperience
             }, config);
 

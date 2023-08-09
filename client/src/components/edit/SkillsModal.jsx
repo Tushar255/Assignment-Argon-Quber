@@ -57,7 +57,7 @@ const SkillsModal = () => {
                 }
             };
 
-            const { data } = await axios.put("http://localhost:4545/info/update/skills", {
+            const { data } = await axios.put("https://tsb-backend-tole.onrender.com/info/update/skills", {
                 skills: addSkill
             }, config);
 

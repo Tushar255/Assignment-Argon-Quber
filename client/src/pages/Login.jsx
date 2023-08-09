@@ -26,10 +26,10 @@ const Login = () => {
     }, [])
 
     const handleTwitter = async () => {
-        window.open("https://backend-argon-quber.onrender.com/auth/twitter", "_self")
+        window.open("https://tsb-backend-tole.onrender.com/auth/twitter", "_self")
     }
     const handleLinkedin = async () => {
-        window.open("https://backend-argon-quber.onrender.com/auth/linkedin", "_self")
+        window.open("https://tsb-backend-tole.onrender.com/auth/linkedin", "_self")
     }
 
     const handleLogin = async () => {
@@ -40,7 +40,7 @@ const Login = () => {
                     "Content-type": "application/json"
                 }
             };
-            const { data } = await axios.post("http://localhost:4545/auth/login", { email, password }, config);
+            const { data } = await axios.post("https://tsb-backend-tole.onrender.com/auth/login", { email, password }, config);
 
             toast({
                 title: data.msg,

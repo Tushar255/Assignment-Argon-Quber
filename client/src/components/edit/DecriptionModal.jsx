@@ -36,7 +36,7 @@ const DescriptionModal = () => {
                 }
             };
 
-            const { data } = await axios.put("http://localhost:4545/info/update/description", {
+            const { data } = await axios.put("https://tsb-backend-tole.onrender.com/info/update/description", {
                 description: addDesciption
             }, config);
 

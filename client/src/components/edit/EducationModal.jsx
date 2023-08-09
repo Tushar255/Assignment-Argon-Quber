@@ -43,7 +43,7 @@ const EducationModal = () => {
                 }
             };
 
-            const { data } = await axios.put("http://localhost:4545/info/update/education", {
+            const { data } = await axios.put("https://tsb-backend-tole.onrender.com/info/update/education", {
                 education: addEducation
             }, config);
 

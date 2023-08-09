@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { setLogin } from '../State/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Flex, Text, useToast } from '@chakra-ui/react';
 
 const Social = () => {
-    const userId = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const toast = useToast()
@@ -14,7 +13,7 @@ const Social = () => {
     const user = useSelector((state) => state.auth.user)
 
     const getUserInfoBySocialLogin = () => {
-        fetch("http://localhost:4545/auth/login/success", {
+        fetch("https://tsb-backend-tole.onrender.com/auth/login/success", {
             method: "GET",
             credentials: "include",
 
@@ -37,7 +36,7 @@ const Social = () => {
                 }
             };
 
-            const { data } = await axios.post("http://localhost:4545/auth/social-login", { user }, config)
+            const { data } = await axios.post("https://tsb-backend-tole.onrender.com/auth/social-login", { user }, config)
 
             toast({
                 title: data.msg,
