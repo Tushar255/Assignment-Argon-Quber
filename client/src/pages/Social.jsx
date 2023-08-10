@@ -7,7 +7,9 @@ import { Flex, Text, useToast } from '@chakra-ui/react';
 
 const Social = () => {
     const serializedUser = useParams();
+    console.log(serializedUser);
     const userData = JSON.parse(decodeURIComponent(serializedUser));
+    console.log(userData);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const toast = useToast()
