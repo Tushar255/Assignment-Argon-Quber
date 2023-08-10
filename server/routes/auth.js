@@ -31,10 +31,12 @@ router.get('/twitter',
 );
 
 router.get('/twitter/callback',
-    passport.authenticate('twitter', {
-        successRedirect: SUCCESS_URL,
-        failureRedirect: FAILURE_URL
-    }),
+    passport.authenticate('twitter'),
+    (req, res) => {
+        const user = req.user;
+        const serializedUser = encodeURIComponent(JSON.stringify(user));
+        res.redirect(`https://main--resonant-creponne-e01484.netlify.app/social-login/${serializedUser}`);
+    }
 );
 
 router.get('/login/success', (req, res) => {
