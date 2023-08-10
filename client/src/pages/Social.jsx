@@ -6,7 +6,8 @@ import axios from 'axios';
 import { Flex, Text, useToast } from '@chakra-ui/react';
 
 const Social = () => {
-    const userData = useParams();
+    const serializedUser = useParams();
+    const userData = JSON.parse(decodeURIComponent(serializedUser));
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const toast = useToast()

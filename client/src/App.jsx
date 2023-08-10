@@ -12,7 +12,7 @@ function App() {
         <Route path='/' element={<Signup />} />
         <Route path='/login' element={<Login />} />
         <Route path='/profile' element={<Profile />} />
-        <Route path='/social-login/:userData' element={<Social />} />
+        <Route path='/social-login/:serializedUser' element={<Social />} />
       </Routes>
     </div>
   )
