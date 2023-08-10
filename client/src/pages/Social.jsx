@@ -25,7 +25,14 @@ const Social = () => {
         }).then(response => {
             console.log(response);
             if (response.status === 200) return response.json();
-            throw new Error("authentication failed!")
+            navigate('/');
+            toast({
+                title: 'Authentication failed!',
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+                position: "top"
+            });
         }).then(async (resObj) => {
             const user = resObj.user;
             console.log(user);
