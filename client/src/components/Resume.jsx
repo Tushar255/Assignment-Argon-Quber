@@ -331,7 +331,7 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
                         flexDir={'column'}
                     >
                         <Flex
-                            p='3' mb='3' px='10'
+                            p='3' mb='3' px='5'
                             borderRadius={'full'}
                             bg='hsl(29.4deg 89.35% 66.86%)'
                             border={'2px solid black'}
@@ -341,7 +341,7 @@ const Resume = ({ user, token, setFetchAgain, fetchAgain }) => {
                         </Flex>
 
                         <Flex
-                            p='3' px='10'
+                            p='3' px='5'
                             borderRadius={'full'}
                             bg='hsl(29.4deg 89.35% 66.86%)'
                             border={'2px solid black'}
